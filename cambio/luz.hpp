@@ -24,7 +24,6 @@ Fotosensor::Fotosensor(int sensorPin, int motorPin) {
 }
 
 int Fotosensor::lectura() {
-  return 0;
   this->valorFotosensor = analogRead(this->sensorPin);
   return this->valorFotosensor;
 }

@@ -20,10 +20,10 @@ float sonido_incremento_umbral = 0.0; // Incremento del 1% (Esta lectura funcion
 
 // Se tomará la lectura cada minuto y se enviará a la base de datos //
 Fotosensor f(A0, 5);
-// Peso p(12, 13, D1);
+Peso p(12, 13, D1);
 Sonido s(A0, SSID, PASS);
 
-// DB d(SSID, PASS);
+DB d(SSID, PASS);
 
 // Lecturas iniciales del sensor
 int lectura_inicial_luz;
@@ -33,15 +33,15 @@ int lectura_inicial_sonido;
 void setup() {
   // Registrar lecturas iniciales del sensor
   lectura_inicial_luz = f.lectura();
-  // lectura_inicial_peso = p.lectura();
+  lectura_inicial_peso = p.lectura();
   lectura_inicial_sonido = s.lectura();
 
-  // d.connect();
+  d.connect();
 }
 
 void loop() {
   int lectura_foto_sensor = f.lectura();
-  // int lectura_peso = p.lectura();
+  int lectura_peso = p.lectura();
   int lectura_sonido = s.lectura();
 
   // Calcular valores de umbral basados en las lecturas iniciales e incremento porcentual
@@ -57,30 +57,30 @@ void loop() {
 
   // El siguiente codigo solo generara consultas de SQL si hay un cierto cambio de cierto porcentaje
 
-  // if (lectura_peso > peso_umbral_superior || lectura_peso < peso_umbral_inferior) {
-  //   std::string consulta = generarConsulta(1, lectura_peso);
-  //   Serial.println(consulta.c_str());
-    // lectura_inicial_peso = lectura_peso;
-  //   // d.log(consulta);
-  // }
+  if (lectura_peso > peso_umbral_superior || lectura_peso < peso_umbral_inferior) {
+    std::string consulta = generarConsulta(1, lectura_peso);
+    Serial.println(consulta.c_str());
+    lectura_inicial_peso = lectura_peso;
+    d.log(consulta);
+  }
 
   if (lectura_foto_sensor > luz_umbral_superior || lectura_foto_sensor < luz_umbral_inferior) {
     std::string consulta = generarConsulta(2, lectura_foto_sensor);
     Serial.println(consulta.c_str());
     lectura_inicial_luz = lectura_foto_sensor;
-    // d.log(consulta);
+    d.log(consulta);
   }
 
   if (lectura_sonido != 0) {
     std::string consulta = generarConsulta(3, lectura_sonido);
     Serial.println(consulta.c_str());
     lectura_inicial_sonido = lectura_sonido;
-    // d.log(consulta);
+    d.log(consulta);
   }
 
-  f.actuador();
+  // f.actuador();
   // p.actuador();
-  s.actuador();
+  // s.actuador();
 
   delay(200);
 }

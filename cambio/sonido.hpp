@@ -50,12 +50,12 @@ int Sonido::lectura() {
     this->positiveReadings++;
   }
 
-  Serial.println("----------");
-  Serial.println(lecturaRuido);
-  Serial.println(positiveReadings);
+  // Serial.println("----------");
+  // Serial.println(lecturaRuido);
+  // Serial.println(positiveReadings);
   intento++;
 
-  if (this->positiveReadings >= 5) {
+  if (this->positiveReadings >= 1) {
     this->averageReading = this->sum / this->intento;
     this->intento = 0;
     this->sum = 0;

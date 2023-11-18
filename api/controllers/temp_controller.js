@@ -14,7 +14,7 @@ class MainController {
                         VALUES 
                             ( ${machineID}, ${calidad}, ${dist}, NOW() )`
 
-            // console.log(sql);
+            console.log(sql);
 
             mysql.query(sql, (error,data,fields) => {
                 if(error) {

@@ -1,6 +1,7 @@
 module.exports = {
-    HOST: "localhost", // dirección de servidor MYSQL
-    USER: "root",
+    HOST: "10.22.135.86", // dirección de servidor MYSQL
+    PORT: "3307",
+    USER: "sauce",
     // PASSWORD: " ",
-    DB: "iot"
+    DB: "frontend"
   };

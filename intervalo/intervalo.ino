@@ -40,10 +40,6 @@ void loop() {
 }
 
 std::string generarQuery(int calidad_lectura, float ultra_lectura) {
-
-  // http://ip:3100/api/ID/sensor/intervalo/0/0
-  // http://ip:3100/api/ID/sensor/cambio/(peso/ruido/pelota)/0
-
   std::string query = ROOT_URL;
   query += "1/";
   query += "sensor/intervalo/";
