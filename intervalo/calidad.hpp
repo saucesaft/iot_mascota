@@ -1,7 +1,7 @@
 #ifndef CALIDAD_H
 #define CALIDAD_H
 #include <Arduino.h>
-
+//comentario
 class Calidad {
 public:
   Calidad(int red, int green, int blue, int tds);
