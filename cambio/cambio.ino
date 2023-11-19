@@ -37,7 +37,7 @@ void setup() {
   // Registrar lecturas iniciales del sensor
   lectura_inicial_luz = f.lectura();
   lectura_inicial_peso = p.lectura();
-  //lectura_inicial_sonido = s.lectura();
+  lectura_inicial_sonido = s.lectura();
 
   d.connect();
 }
