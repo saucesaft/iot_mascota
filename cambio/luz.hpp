@@ -21,6 +21,9 @@ Fotosensor::Fotosensor(int sensorPin, int motorPin) {
 
   this->sensorPin = sensorPin;
   this->motorPin = motorPin;
+  pinMode(motorPin,OUTPUT);
+  digitalWrite(motorPin,HIGH);
+  Serial.println("Fotosensor ya inizialsisdifojzo");
 }
 
 int Fotosensor::lectura() {
@@ -29,13 +32,10 @@ int Fotosensor::lectura() {
 }
 
 void Fotosensor::actuador() {
-
-  if (this->valorFotosensor < 200) {    //Si el valor del fotosensor < 200
-    digitalWrite(this->motorPin, HIGH);   //Mandar corriente al motor (Elevar mecanismo de cuchara)
+    digitalWrite(this->motorPin, LOW);   //Mandar corriente al motor (Elevar mecanismo de cuchara)
     delay(500);                           //Esperar 500ms
-    digitalWrite(this->motorPin, LOW);    //Dejar de mandar corriente al motor (Bajar mecanismo de cuchara)
+    digitalWrite(this->motorPin, HIGH);    //Dejar de mandar corriente al motor (Bajar mecanismo de cuchara)
     delay(1900);                          //Esperar 1900ms
-  }
   return;
 }
 #endif
