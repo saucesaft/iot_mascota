@@ -24,7 +24,6 @@ private:
 
 Peso::Peso(int doutPin, int sckPin, int servoPin) {
   Serial.println("--> Escala: Inicializada");
-
   this->doutPin = doutPin;
   this->sckPin = sckPin;
   this->servoPin = servoPin;
@@ -33,32 +32,31 @@ Peso::Peso(int doutPin, int sckPin, int servoPin) {
   this->escala.begin(this->doutPin, this->sckPin);
 
   this->escala.set_scale(-7272.2);
-  this->escala.tare();
+  //this->escala.tare();
 }
 
 int Peso::lectura() {
   this->measure = this->escala.get_units(10);
   this->escala.power_down();
+
   delay(50);
   this->escala.power_up();
 
   return this->measure;
 }
 
-// TODO: Modificar los angulos para ver que coincidan con los angulos
 void Peso::actuador() {
-  if (this->measure >= 4.5) {
-    this->open = true;
-  } else {
-    this->open = false;
-  }
+  //Abrir Servo
+  compuerta.write(70);
+  delay(500);
+  compuerta.detach();
+  compuerta.attach(this->servoPin);
 
-  // depende del estado, se abre o cierra la compuerta
-  if (this->open) {
-    this->compuerta.write(180);
-  } else {
-    this->compuerta.write(0);
-  }
+  //Cerrar el servo
+  compuerta.write(0);
+  delay(500);
+  compuerta.detach();
+  compuerta.attach(this->servoPin);
   return;
 }
 #endif

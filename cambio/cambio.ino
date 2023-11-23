@@ -7,7 +7,7 @@
 
 const std::string SSID = "Tec-IoT";
 const std::string PASS = "spotless.magnetic.bridge";
-const std::string ROOT_URL = "http://10.22.224.39:3100/api/";
+const std::string ROOT_URL = "http://10.22.135.86:3100/api/";
 
 /////////////////////////
 // SENSORES DE OCASIÓN //
@@ -20,8 +20,8 @@ float sonido_incremento_umbral = 0.0; // Incremento del 1% (Esta lectura funcion
 
 // Se tomará la lectura cada minuto y se enviará a la base de datos //
 Fotosensor f(A0, 5);
-Peso p(12, 13, D1);
-Sonido s(A0, SSID, PASS);
+Peso p(12, 13, 4);
+Sonido s(16, SSID, PASS);
 
 DB d(SSID, PASS);
 
@@ -31,6 +31,9 @@ int lectura_inicial_peso;
 int lectura_inicial_sonido;
 
 void setup() {
+  Serial.begin(9600);
+  Serial.println("Holiwis, iniciando programa");
+
   // Registrar lecturas iniciales del sensor
   lectura_inicial_luz = f.lectura();
   lectura_inicial_peso = p.lectura();
@@ -40,6 +43,7 @@ void setup() {
 }
 
 void loop() {
+
   int lectura_foto_sensor = f.lectura();
   int lectura_peso = p.lectura();
   int lectura_sonido = s.lectura();
@@ -62,25 +66,24 @@ void loop() {
     Serial.println(consulta.c_str());
     lectura_inicial_peso = lectura_peso;
     d.log(consulta);
+    p.actuador();
   }
 
-  if (lectura_foto_sensor > luz_umbral_superior || lectura_foto_sensor < luz_umbral_inferior) {
+  if (lectura_foto_sensor < luz_umbral_inferior) {
     std::string consulta = generarConsulta(2, lectura_foto_sensor);
     Serial.println(consulta.c_str());
-    lectura_inicial_luz = lectura_foto_sensor;
+    f.actuador();
     d.log(consulta);
   }
+
 
   if (lectura_sonido != 0) {
     std::string consulta = generarConsulta(3, lectura_sonido);
     Serial.println(consulta.c_str());
     lectura_inicial_sonido = lectura_sonido;
+    s.actuador();
     d.log(consulta);
   }
-
-  // f.actuador();
-  // p.actuador();
-  // s.actuador();
 
   delay(200);
 }
