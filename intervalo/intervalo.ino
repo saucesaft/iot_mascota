@@ -8,11 +8,11 @@
 #include <iomanip>
 
 #define QUERY_SIZE  256
-// const std::string SSID = "Tec-IoT";
-// const std::string PASS = "spotless.magnetic.bridge";
+const std::string SSID = "Tec-IoT";
+const std::string PASS = "spotless.magnetic.bridge";
 
-const std::string SSID = "IZZI-FF38";
-const std::string PASS = "109397EEFF38";
+// const std::string SSID = "IZZI-FF38";
+// const std::string PASS = "109397EEFF38";
 
 const std::string ROOT_URL = "http://10.22.135.86:3100/api/";
 
@@ -20,7 +20,7 @@ const std::string ROOT_URL = "http://10.22.135.86:3100/api/";
 // SENSORES DE INTERVALO //
 ///////////////////////////
 
-// se tomara la lectura cada minuto se mandara a la base de datos //
+// Se tomara la lectura cada minuto se mandara a la base de datos //
 Calidad c(5, 4, 3, A0);
 Ultrasonico u(12, 14, 16);
 DB d(SSID, PASS);
@@ -30,6 +30,7 @@ void setup() {
   d.connect();
 }
 
+// Cada minuto se toma la lectura, se actua a partir de los valores y se manda esa misma lectura al API
 void loop() {
   int calidad_lectura = c.lectura();
   float ultra_lectura = u.lectura();
@@ -40,10 +41,12 @@ void loop() {
 
   Serial.println(query.c_str());
 
-  // d.log(query);
+  d.log(query);
 
   delay(1000);
+}
 
+// Esta función genera el URL completo con el Query para mandar al API
 std::string generarQuery(int calidad_lectura, float ultra_lectura) {
   std::string query = ROOT_URL;
   query += "1/";
@@ -54,6 +57,7 @@ std::string generarQuery(int calidad_lectura, float ultra_lectura) {
   return query;
 }
 
+// Esta función es usada para convertir cualquier simbolo que no sea aceptado en URLS a uno que si (como puede ser el caso con numeros negativos)
 std::string url_encode(const std::string &value) {
     std::ostringstream escaped;
     escaped.fill('0');
