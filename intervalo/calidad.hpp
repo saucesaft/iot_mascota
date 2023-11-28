@@ -7,6 +7,7 @@ public:
   Calidad(int red, int green, int blue, int tds);
   int lectura();
   void actuador();
+  void encenderColor(int rojo, int verde, int azul);
 private:
   int getMedianNum(int bArray[], int iFilterLen);
 
@@ -26,6 +27,7 @@ private:
 };
 
 Calidad::Calidad(int red, int green, int blue, int tds) {
+ 
   this->red = red;
   this->green = green;
   this->blue = blue;
@@ -34,8 +36,9 @@ Calidad::Calidad(int red, int green, int blue, int tds) {
   pinMode(red, OUTPUT);
   pinMode(green, OUTPUT);
   pinMode(blue, OUTPUT);
+  
 
-  Serial.println("--> Sensor de calidad de agua: Inicializado");
+   Serial.println("--> Sensor de calidad de agua: Inicializado");
 }
 
 int Calidad::lectura() {
@@ -72,21 +75,27 @@ int Calidad::lectura() {
 void Calidad::actuador() {
   Serial.println("actuador RGB");
 
-  return;
-
   switch (tdsValue) {
-    case 0 ... 300: // Valores bajos, por ejemplo, de 0 a 341
+    case 0 ... 600: // Valores bajos, por ejemplo, de 0 a 341
       //setColor(255, 0, 0);
       //digitalWrite(GREEN,HIGH); // Rojo
-      digitalWrite(this->blue, HIGH);
+      encenderColor(0, 255, 255);  // azul
+
+      Serial.println("azul");
       break;
-    case 301 ... 600: // Valores intermedios, por ejemplo, de 342 a 682
+    case 601 ... 900: // Valores intermedios, por ejemplo, de 342 a 682
       //setColor(0, 255, 0); 
-      digitalWrite(this->green, HIGH); // Verde
+      encenderColor(255, 0, 255);  // verde
+
+      Serial.println("verde");
+      break;
+    case 901 ... 1000:
+      Serial.println("1");
+      encenderColor(255, 255, 0);
+
+      Serial.println("rojo");
       break;
     default: // Valores altos
-      //setColor(0, 0, 255);
-      digitalWrite(this->red, HIGH); // Azul
       break;
   }
 }
@@ -114,5 +123,11 @@ int Calidad::getMedianNum(int bArray[], int iFilterLen)
   else
     bTemp = (bTab[iFilterLen / 2] + bTab[iFilterLen / 2 - 1]) / 2;
   return bTemp;
+}
+// Función para encender el LED en un color específico
+void Calidad::encenderColor(int rojo, int verde, int azul) {
+  analogWrite(this->red, rojo);
+  analogWrite(this->green, verde);
+  analogWrite(this->blue, azul);
 }
 #endif
