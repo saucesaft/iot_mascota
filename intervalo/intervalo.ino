@@ -3,16 +3,9 @@
 #include "db.hpp"
 
 #include <string>
-#include <sstream>
-#include <cctype>
-#include <iomanip>
 
-#define QUERY_SIZE  256
 const std::string SSID = "Tec-IoT";
 const std::string PASS = "spotless.magnetic.bridge";
-
-// const std::string SSID = "IZZI-FF38";
-// const std::string PASS = "109397EEFF38";
 
 const std::string ROOT_URL = "http://10.22.135.86:3100/api/";
 
