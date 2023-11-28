@@ -8,9 +8,13 @@
 #include <iomanip>
 
 #define QUERY_SIZE  256
-const std::string SSID = "Tec-IoT";
-const std::string PASS = "spotless.magnetic.bridge";
-const std::string ROOT_URL = "http://10.22.224.39:3100/api/";
+// const std::string SSID = "Tec-IoT";
+// const std::string PASS = "spotless.magnetic.bridge";
+
+const std::string SSID = "IZZI-FF38";
+const std::string PASS = "109397EEFF38";
+
+const std::string ROOT_URL = "http://10.22.135.86:3100/api/";
 
 ///////////////////////////
 // SENSORES DE INTERVALO //
@@ -29,15 +33,16 @@ void setup() {
 void loop() {
   int calidad_lectura = c.lectura();
   float ultra_lectura = u.lectura();
-
+  c.actuador();
+  u.actuador();
+  
   std::string query = generarQuery(calidad_lectura, ultra_lectura);
 
   Serial.println(query.c_str());
 
-  d.log(query);
+  // d.log(query);
 
   delay(1000);
-}
 
 std::string generarQuery(int calidad_lectura, float ultra_lectura) {
   std::string query = ROOT_URL;
