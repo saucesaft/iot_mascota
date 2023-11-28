@@ -16,7 +16,7 @@ const std::string ROOT_URL = "http://10.22.135.86:3100/api/";
 // Incremento porcentual para cada sensor
 float luz_incremento_umbral = 0.1;  // Incremento del 10%
 float peso_incremento_umbral = 0.2; // Incremento del 20%
-float sonido_incremento_umbral = 0.0; // Incremento del 1% (Esta lectura funciona diferente)
+float sonido_incremento_umbral = 0.0; // Incremento del 0% (Esta lectura funciona diferente)
 
 // Se tomará la lectura cada minuto y se enviará a la base de datos //
 Fotosensor f(A0, 5);
@@ -42,6 +42,7 @@ void setup() {
   d.connect();
 }
 
+// En resumen solamente se publicara y se hara una "reacción" con el actuador si es que se alcanza el umbral definido (en porcentajes)
 void loop() {
 
   int lectura_foto_sensor = f.lectura();
@@ -60,7 +61,6 @@ void loop() {
 
 
   // El siguiente codigo solo generara consultas de SQL si hay un cierto cambio de cierto porcentaje
-
   if (lectura_peso > peso_umbral_superior || lectura_peso < peso_umbral_inferior) {
     std::string consulta = generarConsulta(1, lectura_peso);
     Serial.println(consulta.c_str());
@@ -85,13 +85,12 @@ void loop() {
     d.log(consulta);
   }
 
+  // Se agrega un delay para no esta constantemente checando
   delay(200);
 }
 
+// Esta función genera el URL completo con el Query para mandar al API
 std::string generarConsulta(int tipo_sensor, int lectura) {
-  // http://ip:3100/api/ID/sensor/intervalo/0/0
-  // http://ip:3100/api/ID/sensor/cambio/(peso/ruido/pelota)/0
-
   std::string consulta = ROOT_URL;
   consulta += "1/";
   consulta += "sensor/cambio/";
