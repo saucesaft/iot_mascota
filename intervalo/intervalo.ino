@@ -37,7 +37,7 @@ void loop() {
   c.actuador();
   u.actuador();
   
-  std::string query = generarQuery(calidad_lectura, ultra_lectura);
+  std::string query = generarConsulta(calidad_lectura, ultra_lectura);
 
   Serial.println(query.c_str());
 
@@ -47,36 +47,12 @@ void loop() {
 }
 
 // Esta función genera el URL completo con el Query para mandar al API
-std::string generarQuery(int calidad_lectura, float ultra_lectura) {
+std::string generarConsulta(int calidad_lectura, float ultra_lectura) {
   std::string query = ROOT_URL;
   query += "1/";
   query += "sensor/intervalo/";
-  query += url_encode(std::to_string(calidad_lectura)) + "/";
-  query += url_encode(std::to_string(ultra_lectura)) + "/";
+  query += std::to_string(calidad_lectura) + "/";
+  query += std::to_string(ultra_lectura) + "/";
 
   return query;
-}
-
-// Esta función es usada para convertir cualquier simbolo que no sea aceptado en URLS a uno que si (como puede ser el caso con numeros negativos)
-std::string url_encode(const std::string &value) {
-    std::ostringstream escaped;
-    escaped.fill('0');
-    escaped << std::hex;
-
-    for (std::string::const_iterator i = value.begin(), n = value.end(); i != n; ++i) {
-        std::string::value_type c = (*i);
-
-        // Keep alphanumeric and other accepted characters intact
-        if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
-            escaped << c;
-            continue;
-        }
-
-        // Any other characters are percent-encoded
-        escaped << std::uppercase;
-        escaped << '%' << std::setw(2) << int((unsigned char) c);
-        escaped << std::nouppercase;
-    }
-
-    return escaped.str();
 }
