@@ -15,6 +15,7 @@ private:
 };
 
 Ultrasonico::Ultrasonico(int trig, int echo, int pump) {
+  Serial.println("--> Sensor ultrasonico: Inicializado");
   this->trig = trig;
   this->echo = echo;
   this->pump = pump;
@@ -23,7 +24,7 @@ Ultrasonico::Ultrasonico(int trig, int echo, int pump) {
   pinMode(echo, INPUT);  // Pin de eco del sensor.
   pinMode(pump, OUTPUT); // Configura el pin de la bomba como salida.
 
-  Serial.println("--> Sensor ultrasonico: Inicializado");
+  digitalWrite(this->pump, HIGH);
 }
 
 float Ultrasonico::lectura() {
@@ -46,16 +47,14 @@ float Ultrasonico::lectura() {
 
 void Ultrasonico::actuador() {
   Serial.println("actuador bomba de agua");
-  return;
 
-  if (this->distancia <= 3.9) {
+  if (this->distancia <= 12.8) {
      // El nivel de agua es igual o menor a 3.9 cm, apaga la bomba.
      digitalWrite(this->pump, HIGH);
-   } else if (this->distancia >= 6.5) {
+   } else if (this->distancia >= 13.5) {
      // El nivel de agua es igual o mayor a 6.5 cm, enciende la bomba.
      digitalWrite(this->pump, LOW);
    }
-   digitalWrite(this->pump, HIGH);
 }
 
 #endif
